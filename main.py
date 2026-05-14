@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import httpx
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -75,3 +76,19 @@ async def execute(body: dict):
 @app.get("/status")
 async def status():
     return {"pc_online": pc_connection is not None}
+
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+
+@app.post("/claude")
+async def claude_proxy(body: dict):
+    async with httpx.AsyncClient(timeout=60) as client:
+        resp = await client.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01",
+                "Content-Type": "application/json",
+            },
+            json=body,
+        )
+    return resp.json()
