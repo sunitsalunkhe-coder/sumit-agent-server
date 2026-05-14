@@ -33,7 +33,7 @@ async def root():
 @app.websocket("/ws/agent")
 async def agent_socket(ws: WebSocket):
     global pc_connection
-    token = ws.headers.get("authorization", "").replace("Bearer ", "")
+    token = ws.query_params.get("token", "")
     if token != AGENT_TOKEN:
         await ws.close(code=4003)
         return
