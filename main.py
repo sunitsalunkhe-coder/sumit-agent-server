@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-AGENT_TOKEN = os.getenv("AGENT_TOKEN", "your-secret-token")
+AGENT_TOKEN = os.getenv("AGENT_TOKEN", "shadow2026")
 
 security = HTTPBearer(auto_error=False)
 
