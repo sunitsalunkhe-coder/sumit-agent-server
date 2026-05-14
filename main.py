@@ -77,7 +77,7 @@ async def execute(body: dict):
 async def status():
     return {"pc_online": pc_connection is not None}
 
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+ANTHROPIC_API_KEY = os.getenv("AI_SECRET_KEY", "")
 
 @app.post("/claude")
 async def claude_proxy(body: dict):
